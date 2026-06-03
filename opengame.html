@@ -1,0 +1,231 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Alligator Nugget Chase</title>
+<style>
+    body {
+        margin: 0;
+        background: #87ceeb;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        font-family: Arial, sans-serif;
+        color: #fff;
+    }
+
+    h1 {
+        margin: 15px 0 5px;
+    }
+
+    #score {
+        font-size: 20px;
+        margin-bottom: 10px;
+    }
+
+    canvas {
+        background: #4caf50;
+        border: 4px solid #2e7d32;
+    }
+
+    #instructions {
+        margin-top: 10px;
+        color: white;
+    }
+</style>
+</head>
+<body>
+
+<h1>🐊 Alligator Nugget Chase 🍗</h1>
+<div id="score">Score: 0</div>
+<canvas id="game" width="600" height="600"></canvas>
+<div id="instructions">Use Arrow Keys to move</div>
+
+<script>
+const canvas = document.getElementById("game");
+const ctx = canvas.getContext("2d");
+
+const gridSize = 30;
+const tileCount = canvas.width / gridSize;
+
+let alligator;
+let nugget;
+let dx;
+let dy;
+let score;
+let gameOver;
+
+function randomPosition() {
+    return {
+        x: Math.floor(Math.random() * tileCount),
+        y: Math.floor(Math.random() * tileCount)
+    };
+}
+
+function restartGame() {
+    alligator = [{ x: 10, y: 10 }];
+    nugget = randomPosition();
+
+    dx = 1;
+    dy = 0;
+
+    score = 0;
+    gameOver = false;
+
+    document.getElementById("score").textContent = "Score: 0";
+}
+
+restartGame();
+
+document.addEventListener("keydown", e => {
+
+    if (gameOver && e.code === "Space") {
+        restartGame();
+        return;
+    }
+
+    if (e.key === "ArrowUp" && dy === 0) {
+        dx = 0;
+        dy = -1;
+    }
+
+    if (e.key === "ArrowDown" && dy === 0) {
+        dx = 0;
+        dy = 1;
+    }
+
+    if (e.key === "ArrowLeft" && dx === 0) {
+        dx = -1;
+        dy = 0;
+    }
+
+    if (e.key === "ArrowRight" && dx === 0) {
+        dx = 1;
+        dy = 0;
+    }
+});
+
+function drawAlligatorPart(part, isHead) {
+    const px = part.x * gridSize;
+    const py = part.y * gridSize;
+
+    ctx.fillStyle = isHead ? "#1b5e20" : "#2e7d32";
+    ctx.fillRect(px + 2, py + 2, gridSize - 4, gridSize - 4);
+
+    if (isHead) {
+        ctx.fillStyle = "white";
+
+        ctx.beginPath();
+        ctx.arc(px + 10, py + 10, 3, 0, Math.PI * 2);
+        ctx.arc(px + 20, py + 10, 3, 0, Math.PI * 2);
+        ctx.fill();
+
+        ctx.fillStyle = "black";
+
+        ctx.beginPath();
+        ctx.arc(px + 10, py + 10, 1.5, 0, Math.PI * 2);
+        ctx.arc(px + 20, py + 10, 1.5, 0, Math.PI * 2);
+        ctx.fill();
+    }
+}
+
+function drawNugget() {
+    const x = nugget.x * gridSize + gridSize / 2;
+    const y = nugget.y * gridSize + gridSize / 2;
+
+    ctx.font = "24px serif";
+    ctx.textAlign = "center";
+    ctx.textBaseline = "middle";
+    ctx.fillText("🍗", x, y);
+}
+
+function update() {
+    if (gameOver) return;
+
+    const head = {
+        x: alligator[0].x + dx,
+        y: alligator[0].y + dy
+    };
+
+    if (
+        head.x < 0 ||
+        head.y < 0 ||
+        head.x >= tileCount ||
+        head.y >= tileCount
+    ) {
+        gameOver = true;
+        return;
+    }
+
+    for (let segment of alligator) {
+        if (segment.x === head.x && segment.y === head.y) {
+            gameOver = true;
+            return;
+        }
+    }
+
+    alligator.unshift(head);
+
+    if (head.x === nugget.x && head.y === nugget.y) {
+        score++;
+
+        document.getElementById("score").textContent =
+            "Score: " + score;
+
+        do {
+            nugget = randomPosition();
+        } while (
+            alligator.some(
+                part => part.x === nugget.x && part.y === nugget.y
+            )
+        );
+    } else {
+        alligator.pop();
+    }
+}
+
+function draw() {
+    ctx.fillStyle = "#4caf50";
+    ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+    drawNugget();
+
+    alligator.forEach((part, index) => {
+        drawAlligatorPart(part, index === 0);
+    });
+
+    if (gameOver) {
+        ctx.fillStyle = "rgba(0,0,0,0.6)";
+        ctx.fillRect(0, 0, canvas.width, canvas.height);
+
+        ctx.fillStyle = "white";
+        ctx.font = "40px Arial";
+        ctx.textAlign = "center";
+
+        ctx.fillText(
+            "GAME OVER",
+            canvas.width / 2,
+            canvas.height / 2 - 20
+        );
+
+        ctx.font = "24px Arial";
+
+        ctx.fillText(
+            "Press SPACE to play again",
+            canvas.width / 2,
+            canvas.height / 2 + 25
+        );
+    }
+}
+
+function gameLoop() {
+    update();
+    draw();
+}
+
+setInterval(gameLoop, 120);
+</script>
+
+</body>
+</html>

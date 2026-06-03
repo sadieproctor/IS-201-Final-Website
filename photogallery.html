@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sadie Proctor | Study Abroad Photo Gallery</title>
+    <link rel="stylesheet" href="styles/styles.css">
+    <style>
+        body { margin: 0; background: #f4f6f8; color: #111827; font-family: 'Gill Sans', 'Gill Sans MT', Calibri, 'Trebuchet MS', sans-serif; }
+        .gallery-page { max-width: 1120px; margin: 0 auto; padding: 32px 24px; }
+        .gallery-header { margin-bottom: 28px; }
+        .gallery-header h1 { font-size: clamp(2rem, 3vw, 2.8rem); margin: 0 0 12px; }
+        .gallery-header p { margin: 0; color: #475569; max-width: 700px; line-height: 1.7; }
+        .gallery-grid { display: grid; gap: 22px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); }
+        .gallery-card { background: #ffffff; border-radius: 18px; overflow: hidden; box-shadow: 0 20px 38px rgba(15, 23, 42, 0.09); border: 1px solid rgba(148, 163, 184, 0.16); }
+        .gallery-card img { width: 100%; display: block; aspect-ratio: 4 / 3; object-fit: cover; }
+        .gallery-caption { padding: 14px 16px 18px; font-size: 0.98rem; color: #111827; text-align: center; }
+        .gallery-caption span { color: #64748b; display: block; margin-top: 6px; font-size: 0.9rem; }
+        @media (max-width: 720px) { .gallery-page { padding: 20px 16px; } }
+    </style>
+</head>
+<body>
+    <div class="gallery-page">
+        <header class="gallery-header">
+            <h1>Study Abroad Photo Gallery</h1>
+            <p>A few of my memories from European study abroad program.</p>
+        </header>
+        <section class="gallery-grid">
+            <article class="gallery-card">
+                <img src="amalfi.jpeg" alt="Amalfi Coast">
+                <div class="gallery-caption">Amalfi Coast</div>
+            </article>
+            <article class="gallery-card">
+                <img src="colosseum.jpeg" alt="Colosseum">
+                <div class="gallery-caption">Colosseum, Rome</div>
+            </article>
+            <article class="gallery-card">
+                <img src="florence.jpeg" alt="Florence">
+                <div class="gallery-caption">Florence</div>
+            </article>
+            <article class="gallery-card">
+                <img src="montmichel.jpeg" alt="Mont Saint Michel">
+                <div class="gallery-caption">Mont Saint Michel</div>
+            </article>
+            <article class="gallery-card">
+                <img src="paris.jpeg" alt="Paris">
+                <div class="gallery-caption">Paris</div>
+            </article>
+            <article class="gallery-card">
+                <img src="tivoli.jpeg" alt="Tivoli">
+                <div class="gallery-caption">Tivoli</div>
+            </article>
+            <article class="gallery-card">
+                <img src="venice.jpeg" alt="Venice">
+                <div class="gallery-caption">Venice</div>
+            </article>
+        </section>
+    </div>
+</body>
+</html>
